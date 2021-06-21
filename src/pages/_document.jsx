@@ -38,10 +38,6 @@ class MyDocument extends Document {
           <link rel="manifest" href="/favicon/site.webmanifest" />
         </Head>
         <body>
-          <ColorModeScript
-            initialColorMode={colorMode.config.initialColorMode}
-          />
-
           <Main />
           <NextScript />
         </body>

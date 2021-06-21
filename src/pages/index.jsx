@@ -1,26 +1,103 @@
-import { Box, Button, Heading, Text, useColorModeValue } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Heading,
+  HStack,
+  Icon,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react"
 import { NextSeo } from "next-seo"
 import NextImage from "next/image"
+import { CloseIcon} from '@chakra-ui/icons'
 
-import { seo, data } from "config"
+import { seo } from "config"
 
+import { FaEnvelope,  FaGithub, FaLinkedin} from "react-icons/fa"
+import qry from "../graphql/query"
+import github from "../db"
+import { useEffect, useState } from "react"
+import ShowProject from "@/components/UI/ShowProjects"
+
+const socialAccounts = [
+  {
+    icon: FaGithub, path: "https://github.com/abhishek1998",
+    title:"Github"
+},
+{
+  icon: FaLinkedin, path: "https://www.linkedin.com/in/abhishek-r-7bb907118/",
+  title: "Linkedin"
+},
+{
+  icon: FaEnvelope, path: "mailto: raturiabhi1000@gmail.com",
+  title: "Gmail"
+},
+]
 const Home = () => {
-  const color = useColorModeValue("telegram.500", "telegram.400")
-
-  const isOdd = (num) => num % 2
-
-  const title = `Home | ${seo.title}`
+  const title = `${seo.title}`
+  const color = useColorModeValue("purple.800", "purple.100")
   const description = seo.description
+
+  const [filter, setFilter ] = useState(false);
+  const [userRepos, setUserRepos] = useState([{}])
+  const [filteredRepos , setFilteredRepos]= useState([{}])
+
+
+  const reset = (e) => {
+    e.preventDefault();
+    setFilter(false);
+  }
+
+  const filterJS = (e) => {
+    e.preventDefault()
+    setFilter(true)
+    console.log(filter)
+    const res = userRepos.filter((repo) => repo.node.primaryLanguage.name.toLowerCase() === "JavaScript".toLowerCase() || repo.node.primaryLanguage.name.toLowerCase() === "EJS".toLowerCase() )
+    setFilteredRepos(res)
+    console.log("filtered js ", res)
+  }
+
+  const filterC = (e) =>  {
+    e.preventDefault()
+    setFilter(true)
+    console.log(filter)
+    const res = userRepos.filter((repo) => repo.node.primaryLanguage.name.toLowerCase() === "C#".toLowerCase() )
+    setFilteredRepos(res)
+    console.log("filtered C#", res)
+  }
+
+
+  const fetchdata = (() => {
+    //cant use GET method when using headers
+    fetch(github.baseURL, {
+      method: "POST",
+      headers: github.headers,
+      body: JSON.stringify(qry),
+    }).then((resp) => resp.json())
+      .then((data) => {
+        console.log("Github GraphQL API returned: ", data, process.env.GITHUB_TOKEN)
+        setUserRepos(data.data.viewer.starredRepositories.edges)
+      })
+      .catch((err) => console.error(err))
+  })
+
+  useEffect(() => {
+    fetchdata()
+  }, [])
 
   return (
     <>
       <NextSeo
         title={title}
+        robotsProps={seo.robots}
         description={description}
         canonical={seo.canonical}
         openGraph={{
-          title,
-          description,
+	  title,
+	  description,
           images: [
             {
               url: `${seo.canonical}bighead.svg`,
@@ -45,47 +122,63 @@ const Home = () => {
           width="350"
           height="350"
           alt="avatar bigheads"
-          placeholder="blur"
-          blurDataURL="L5I~of#i004mgjw]-4XA00?wL#xu"
-          priority
         />
         <Box>
-          <Heading as="h1" fontSize="2xl" fontWeight="500" py="2">
-            Hi, I'm John Doe{" "}
-            <span role="img" aria-label="hand">
-              👋🏻
-            </span>
-          </Heading>
+          <VStack w="100%">
+            <HStack>
+              <Box py="2">
+                {socialAccounts.map((item, index) => (
+                  <a
+                    href={item.path}
+                    aria-label={item.title}
+                    key={index}
+                  >
+                    <Button ml={3} mr={3} colorScheme="purple" variant="outline" aria-label={item.title}>
+                      <Icon as={item.icon} w="6" h="6" />
+                    </Button>
+                  </a>
+                ))}
+              </Box>
+            </HStack>
+            <Heading color={color} as="h1" fontSize="3xl" fontWeight="500" py="2">
+              <Heading ml={6} mb={5} bgColor="orange.100" textShadow="0px 4px #cdb4db" size="3xl"> Abhishek Raturi </Heading>
+            </Heading
+>
+          </VStack>
           <Heading fontSize={["3xl", "4xl"]} fontWeight="700">
             <Text as="span" color={color}>
-              Building
+              An Aspiring Full Stack Developer
             </Text>{" "}
-            digital products, Brands, And experience.
           </Heading>
-          <Text py="4">
-            A{" "}
-            <Text as="span" fontWeight="600">
-              web designer
-            </Text>{" "}
-            and{" "}
-            <Text as="span" fontWeight="600">
-              front-end web developer
-            </Text>{" "}
-            based in the US, I specialize in UI/UX design, Responsive web
-            design, And accessibility.
-          </Text>
-          <Button
-            colorScheme="telegram"
-            variant="ghost"
+          <Center mt={4}>
+          <Box>
+            <Heading pl={3} pr={3} as={"mark"} color="purple.600"> Available For Hire </Heading>
+          </Box>
+          </Center>
+          <Container mb={3}>
+            <Text color="purple" py="2">
+              Based in the <u><b>Toronto</b></u>, Canada. I'm passionate about JavaScript based frameworks such as React.js, Next.js and Chakra UI
+            </Text>
+          </Container>
+          <Center>
+          <Box
+            w={[200,300]}
+            _hover={{cursor:"pointer"}}
+            colorScheme="purple"
+            bgColor="purple.100"
+            borderRadius={5}
+            border="solid 2px purple"
             size="lg"
             fontSize="20px"
           >
-            Get in touch
-          </Button>
+            <a href="mailto: raturiabhi1000@gmail.com"> Get in touch </a>
+          </Box>
+          </Center>
         </Box>
       </Box>
 
       <Box
+        id="projects"
         as="section"
         d="flex"
         alignItems="center"
@@ -93,39 +186,38 @@ const Home = () => {
         textAlign={{ base: "center", lg: "left" }}
         py="4"
       >
-        {data.map((item, index) => (
-          <Box
-            d={{ lg: "flex" }}
-            justifyContent={{ lg: "center" }}
-            alignItems={{ lg: "center" }}
-            flexDir={{ lg: isOdd(index) == 1 && "row-reverse" }}
-            key={index}
-          >
-            <Box
-              w={{ base: "80%", lg: "35%" }}
-              mx={{ base: "auto", lg: "0" }}
-              pl={{ lg: isOdd(index) == 1 && "10" }}
-              pr={{ lg: isOdd(index) == 0 && "10" }}
-            >
-              <NextImage
-                src={item.image}
-                width="500"
-                height="500"
-                alt={item.title}
-                placeholder="blur"
-                blurDataURL="L8LE.{~60000_3V@ITx^00t:V?-P"
-              />
+        <Box w="100vw" mb={3} textAlign="center" boxShadow="base">
+          <Heading color="purple.600" textShadow="0px 4px #cdb4db" bgColor="purple.50" pt={3} pb={3} size="3xl"> PROJECTS </Heading>
+        </Box>
+        <Center>
+          <VStack>
+            <Box >
+              <Heading size="lg" color="purple.700"  mb={3}> Filter </Heading>
             </Box>
-
-            <Box w={{ lg: "50%" }}>
-              <Heading as="h1">{item.title}</Heading>
-              <Text py="4">{item.description}</Text>
-            </Box>
+          <Box w="100%" h="100%" pr={[1,2]} pl={[1,2]} pt={[1,2]} pb={[1,2]}  boxShadow="2xl" border="solid 3px #bc00dd" borderRadius={3}>
+            <HStack spacing={[1,4,6]}>
+              <Button onClick={filterJS} value="JavaScript" variant="solid" colorScheme="purple">
+                  Node.js/ React.js
+              </Button>
+              <Button  onClick={filterC} value="C#" variant="solid" colorScheme="orange">
+                  ASP .NET
+              </Button>
+              <Button onClick={reset} value="reset" variant="solid" colorScheme="pink">
+                <CloseIcon />
+              </Button>
+            </HStack>
           </Box>
-        ))}
+          </VStack>
+        </Center>
+        {
+          filter == true ?
+            (filteredRepos && filteredRepos.map((repo, index) =>  <ShowProject repo={repo} index={index}/> )) :
+            ( userRepos && userRepos.map((repo, index) => (
+                <ShowProject repo={repo} color={color}  index={index}/>
+            )))
+        }
       </Box>
     </>
   )
 }
-
 export default Home

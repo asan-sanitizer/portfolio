@@ -1,9 +1,8 @@
 import { useState } from "react"
-import { Box, chakra, useColorModeValue } from "@chakra-ui/react"
+import { Box, chakra, Heading, useColorModeValue } from "@chakra-ui/react"
 import NextLink from "next/link"
 
 import HamburgerMenu from "../UI/hamburgerMenu"
-import ColorModeToggle from "../UI/colorModeToggle"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -17,12 +16,11 @@ const Navbar = () => {
 
   return (
     <>
-      <Box
-        as="nav"
-        display="flex"
-        flexDir={{ base: "row-reverse", lg: "row" }}
-        alignItems="center"
-        fontWeight="500"
+      <Box as="nav"
+           display="flex"
+           flexDir={{ base: "row", lg: "row" }}
+           alignItems="center"
+           fontWeight="500"
       >
         <HamburgerMenu toggled={isOpen} toggle={setIsOpen} />
         <chakra.ul
@@ -45,26 +43,36 @@ const Navbar = () => {
         >
           <chakra.li
             listStyleType="none"
-            px={{ lg: "8" }}
-            py={{ base: "3", lg: "0" }}
+            px={{ lg: "6" }}
+            py={{ base: "4", lg: "0" }}
           >
-            <NextLink href="/">
-              <a onClick={closeMenu}>Home</a>
+            <NextLink href="#projects">
+              <a onClick={closeMenu}>
+                <u>
+                  <Heading color="purple.500" size="md">
+                    PROJECTS
+                  </Heading>
+                </u>
+              </a>
             </NextLink>
           </chakra.li>
-
           <chakra.li
             listStyleType="none"
-            px={{ lg: "8" }}
+            px={{ lg: "3" }}
             py={{ base: "3", lg: "0" }}
           >
-            <NextLink href="/blog">
-              <a onClick={closeMenu}>Blog</a>
+            <NextLink href="/Abhishek-Raturi-Resume.pdf">
+              <a onClick={closeMenu}>
+                <u>
+                  <Heading color="purple.500" size="md">
+                    DOWNLOAD MY RESUME
+                  </Heading>
+                </u>
+              </a>
             </NextLink>
           </chakra.li>
-        </chakra.ul>
 
-        <ColorModeToggle />
+        </chakra.ul>
       </Box>
     </>
   )
