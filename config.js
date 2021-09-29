@@ -20,10 +20,6 @@ export const websitepreview = [
     src:"https://user-images.githubusercontent.com/15072510/122608972-2eba0680-d04b-11eb-86dc-d0179390dce5.png",
   },
   {
-    name: "expression evaluator ",
-    src:"https://user-images.githubusercontent.com/15072510/110726506-81338d80-81e7-11eb-8574-6248e0eb7597.png",
-  },
-  {
     name: "farm mart ",
     src:"https://user-images.githubusercontent.com/15072510/122614000-cd4a6580-d053-11eb-8ba4-fad6325cb0d6.png",
   },
@@ -31,6 +27,11 @@ export const websitepreview = [
     name: "trendn website",
     src:"https://user-images.githubusercontent.com/15072510/122610173-311d6000-d04d-11eb-865c-2c403aa61021.png",
   },
+  {
+    name: "Simple Lang",
+    src: "https://user-images.githubusercontent.com/15072510/135189635-b881de22-a52f-48da-9fde-2dc57f4bcb1e.png"
+
+  }
 ]
 
 export const data = [
@@ -68,6 +69,13 @@ export const data = [
     image: "/code-review-bro.png",
     github:"https://github.com/abhishek1998/convay-game-of-life",
     builtUsing:"C# TDD"
+  },
+  {
+    title: "Simple Lang",
+    description: "A simple language which supports basic operation such as mathematical expression , let statement.",
+    image: "/code-review-bro.png",
+    github:"https://github.com/abhishek1998/convay-game-of-life",
+    builtUsing:"C++"
   },
 ]
 

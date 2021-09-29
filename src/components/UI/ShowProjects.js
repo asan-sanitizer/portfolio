@@ -35,9 +35,9 @@ const ShowProject = ({repo, index, color}) => {
       flexDir={{ lg: isOdd(index) == 1 && "row-reverse" }}
       key={index}
     >
-      <Box bgColor="pink.50"
-           border="solid 5px magenta"
-           borderColor="purple.500"
+      <Box bgColor="cyan.50"
+           border="solid 5px #fb8500"
+           borderColor="black"
            borderRadius="3" mt={3}
            w={"70vw"}
       >
@@ -45,11 +45,12 @@ const ShowProject = ({repo, index, color}) => {
           textAlign="center"
           textDecoration="underline"
           textDecorationThickness={8}
-          textDecorationColor="purple.500"
-          color={color} as="h1">
+          textDecorationColor="#ffb703"
+          color="#023047" as="h1">
           {repo.node && repo.node.name}
         </Heading>
         <Container mt={3}>
+
           {repo.node && repo.node.description}
         </Container>
 

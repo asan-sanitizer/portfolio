@@ -49,7 +49,7 @@ const Navbar = () => {
             <NextLink href="#projects">
               <a onClick={closeMenu}>
                 <u>
-                  <Heading color="purple.500" size="md">
+                  <Heading color="#023047" size="md">
                     PROJECTS
                   </Heading>
                 </u>
@@ -64,7 +64,7 @@ const Navbar = () => {
             <NextLink href="/Abhishek-Raturi-Resume.pdf">
               <a onClick={closeMenu}>
                 <u>
-                  <Heading color="purple.500" size="md">
+                  <Heading color="#023047" size="md">
                     DOWNLOAD MY RESUME
                   </Heading>
                 </u>
